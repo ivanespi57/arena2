@@ -10,98 +10,98 @@ class AsientoSeeder extends Seeder
 {
     public function run(): void
     {
-        $sectores     = Sector::all();
+        $sectores      = Sector::all();
         $totalAsientos = 0;
+        $now           = now();
 
         foreach ($sectores as $sector) {
-            $count = $this->generarAsientosPorSector($sector);
+            $count = $this->generarAsientosPorSector($sector, $now);
             $totalAsientos += $count;
         }
 
         $this->command->info("✅ Asientos creados: {$totalAsientos}");
     }
 
-    private function generarAsientosPorSector(Sector $sector): int
+    private function generarAsientosPorSector(Sector $sector, $now): int
     {
-        $count = 0;
+        $batch = [];
 
-        // Sectores 101-122 y 301-323: 20 filas x 15 asientos = 300
         if (preg_match('/^Sector (10[1-9]|1[1-2][0-9]|30[1-9]|3[1-2][0-9]|122|323)$/', $sector->nombre)) {
             for ($fila = 1; $fila <= 20; $fila++) {
                 for ($numero = 1; $numero <= 15; $numero++) {
-                    Asiento::create([
-                        'sector_id' => $sector->id,
-                        'fila'      => (string) $fila,
-                        'numero'    => $numero,
-                    ]);
-                    $count++;
+                    $batch[] = [
+                        'sector_id'  => $sector->id,
+                        'fila'       => (string) $fila,
+                        'numero'     => $numero,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
-        }
-        // Palcos: 1 fila x 8 asientos
-        elseif (str_starts_with($sector->nombre, 'Palco')) {
+        } elseif (str_starts_with($sector->nombre, 'Palco')) {
             for ($numero = 1; $numero <= 8; $numero++) {
-                Asiento::create([
-                    'sector_id' => $sector->id,
-                    'fila'      => 'A',
-                    'numero'    => $numero,
-                ]);
-                $count++;
+                $batch[] = [
+                    'sector_id'  => $sector->id,
+                    'fila'       => 'A',
+                    'numero'     => $numero,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
             }
-        }
-        // CLUB: 10 filas x 20 asientos
-        elseif ($sector->nombre === 'CLUB') {
+        } elseif ($sector->nombre === 'CLUB') {
             for ($fila = 1; $fila <= 10; $fila++) {
                 for ($numero = 1; $numero <= 20; $numero++) {
-                    Asiento::create([
-                        'sector_id' => $sector->id,
-                        'fila'      => (string) $fila,
-                        'numero'    => $numero,
-                    ]);
-                    $count++;
+                    $batch[] = [
+                        'sector_id'  => $sector->id,
+                        'fila'       => (string) $fila,
+                        'numero'     => $numero,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
-        }
-        // JOHNNIE WALKER: 8 filas x 15 asientos
-        elseif ($sector->nombre === 'JOHNNIE WALKER') {
+        } elseif ($sector->nombre === 'JOHNNIE WALKER') {
             for ($fila = 1; $fila <= 8; $fila++) {
                 for ($numero = 1; $numero <= 15; $numero++) {
-                    Asiento::create([
-                        'sector_id' => $sector->id,
-                        'fila'      => (string) $fila,
-                        'numero'    => $numero,
-                    ]);
-                    $count++;
+                    $batch[] = [
+                        'sector_id'  => $sector->id,
+                        'fila'       => (string) $fila,
+                        'numero'     => $numero,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
-        }
-        // PISTA: 30 filas x 25 asientos
-        elseif ($sector->nombre === 'PISTA') {
+        } elseif ($sector->nombre === 'PISTA') {
             for ($fila = 1; $fila <= 30; $fila++) {
                 for ($numero = 1; $numero <= 25; $numero++) {
-                    Asiento::create([
-                        'sector_id' => $sector->id,
-                        'fila'      => (string) $fila,
-                        'numero'    => $numero,
-                    ]);
-                    $count++;
+                    $batch[] = [
+                        'sector_id'  => $sector->id,
+                        'fila'       => (string) $fila,
+                        'numero'     => $numero,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
-        }
-        // FRONT STAGE: 5 filas x 30 asientos
-        elseif ($sector->nombre === 'FRONT STAGE') {
+        } elseif ($sector->nombre === 'FRONT STAGE') {
             for ($fila = 1; $fila <= 5; $fila++) {
                 for ($numero = 1; $numero <= 30; $numero++) {
-                    Asiento::create([
-                        'sector_id' => $sector->id,
-                        'fila'      => (string) $fila,
-                        'numero'    => $numero,
-                    ]);
-                    $count++;
+                    $batch[] = [
+                        'sector_id'  => $sector->id,
+                        'fila'       => (string) $fila,
+                        'numero'     => $numero,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
                 }
             }
         }
 
-        return $count;
+        foreach (array_chunk($batch, 1000) as $chunk) {
+            Asiento::insert($chunk);
+        }
+
+        return count($batch);
     }
 }

@@ -27,14 +27,20 @@ class SectorSeeder extends Seeder
         }
 
         // Sectores especiales
-        $sectores[] = ['nombre' => 'CLUB',           'descripcion' => 'Zona Club',              'activo' => true];
-        $sectores[] = ['nombre' => 'JOHNNIE WALKER', 'descripcion' => 'Zona Johnnie Walker',     'activo' => true];
-        $sectores[] = ['nombre' => 'PISTA',          'descripcion' => 'Pista central',           'activo' => true];
-        $sectores[] = ['nombre' => 'FRONT STAGE',    'descripcion' => 'Frente al escenario',     'activo' => true];
+        $sectores[] = ['nombre' => 'CLUB',           'descripcion' => 'Zona Club',          'activo' => true];
+        $sectores[] = ['nombre' => 'JOHNNIE WALKER', 'descripcion' => 'Zona Johnnie Walker', 'activo' => true];
+        $sectores[] = ['nombre' => 'PISTA',          'descripcion' => 'Pista central',       'activo' => true];
+        $sectores[] = ['nombre' => 'FRONT STAGE',    'descripcion' => 'Frente al escenario', 'activo' => true];
 
-        foreach ($sectores as $sector) {
-            Sector::create($sector);
-        }
+        $now = now();
+        $sectoresConTimestamps = array_map(function ($sector) use ($now) {
+            return array_merge($sector, [
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+        }, $sectores);
+
+        Sector::insert($sectoresConTimestamps);
 
         $this->command->info('✅ Sectores creados: ' . count($sectores));
     }
