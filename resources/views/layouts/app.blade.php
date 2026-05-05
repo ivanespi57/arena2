@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="api-token" content="{{ session('api_token', '') }}">
+    <title>@yield('title') - Roig Arena</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-50">
+    <!-- Navegación -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">🎭 Roig Arena</a>
+                </div>
+
+                <!-- Menú central -->
+                <div class="flex space-x-6">
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600">Eventos</a>
+                    @auth
+                        <a href="{{ route('entradas.index') }}" class="text-gray-700 hover:text-red-600">Mis Entradas</a>
+                    @endauth
+                </div>
+
+                <!-- Botones derecha -->
+                <div class="flex space-x-4">
+                    @auth
+                        <span class="text-gray-700 text-sm">{{ auth()->user()->nombre }}</span>
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="text-gray-700 hover:text-red-600">Cerrar sesión</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-red-600">Iniciar sesión</a>
+                        <a href="{{ route('register') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Registrarse</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        @if ($errors->any())
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <h3 class="text-red-800 font-semibold">Errores:</h3>
+                <ul class="text-red-700 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <p class="text-green-700">{{ session('success') }}</p>
+            </div>
+        @endif
+
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p>&copy; 2026 Roig Arena. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
