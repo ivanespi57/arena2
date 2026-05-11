@@ -11,22 +11,22 @@
     <!-- Navegación -->
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex items-center h-16 gap-12">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">Roig Arena</a>
                 </div>
 
                 <!-- Menú central -->
-                <div class="flex gap-20">
+                <div class="flex gap-32">
                     <a href="{{ route('home') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Eventos</a>
                     @auth
                         <a href="{{ route('entradas.index') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Mis Entradas</a>
                     @endauth
                 </div>
 
-                <!-- Botones derecha -->
-                <div class="flex items-center space-x-4">
+                <!-- Botones derecha (flex-1 para empujar a la derecha) -->
+                <div class="flex-1 flex items-center justify-end space-x-4">
                     @auth
                         <span class="text-gray-700 text-sm font-semibold">{{ auth()->user()->nombre }}</span>
                         @if(auth()->user()->is_admin)
