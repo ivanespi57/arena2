@@ -12,8 +12,18 @@
     @foreach ($eventos as $evento)
         <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
             <!-- Imagen del evento -->
-            @if ($evento->poster_url)
-                <img src="{{ $evento->poster_url }}" alt="{{ $evento->nombre }}" class="w-full h-48 object-cover">
+            @php
+                $imagenes = [
+                    'Concierto de Rock'        => 'rock.jpg',
+                    'Final Copa del Rey'       => 'coparey.webp',
+                    'Festival Electrónica'     => 'electronica.jpg',
+                    'Obra de Teatro Clásico'   => 'clasico.jpg',
+                ];
+                $imagen = $imagenes[$evento->nombre] ?? null;
+            @endphp
+
+            @if ($imagen)
+                <img src="{{ asset('storage/eventos/' . $imagen) }}" alt="{{ $evento->nombre }}" class="w-full h-48 object-cover">
             @else
                 <div class="w-full h-48 bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
                     <span class="text-white text-4xl">🎭</span>
