@@ -14,10 +14,10 @@
             <!-- Imagen del evento -->
             @php
                 $imagenes = [
-                    'Concierto de Rock'        => 'rock.jpg',
-                    'Final Copa del Rey'       => 'coparey.webp',
-                    'Festival Electrónica'     => 'electronica.jpg',
-                    'Obra de Teatro Clásico'   => 'clasico.jpg',
+                    "Concierto Rock 2026",
+                    "Final Copa del Rey",
+                    "Festival Electrónica",
+                    "Obra de Teatro Clásico",
                 ];
                 $imagen = $imagenes[$evento->nombre] ?? null;
             @endphp
