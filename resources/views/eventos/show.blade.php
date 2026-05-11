@@ -20,7 +20,7 @@
             </div>
             <div>
                 <p class="text-gray-600 text-sm">⏰ Hora</p>
-                <p class="font-semibold">{{ $evento->hora }}</p>
+                <p class="font-semibold">{{ \Carbon\Carbon::parse($evento->hora)->format('H:i') }}</p>
             </div>
             <div>
                 <p class="text-gray-600 text-sm">🎟 Asientos disponibles</p>
@@ -44,24 +44,33 @@
         <!-- Sectores disponibles -->
         <div class="lg:col-span-2">
             <h2 class="text-2xl font-bold mb-6">Selecciona tu sector</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                @php
-                    $sectores = $evento->sectoresDisponibles();
-                @endphp
-                @foreach ($sectores as $sector)
+            <div x-data="{ sectorAbierto: false }" class="mb-6">
+                <button
+                    @click="sectorAbierto = !sectorAbierto"
+                    class="w-full md:w-auto bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-3 px-6 rounded-lg border border-gray-300 transition-all flex items-center justify-between">
+                    <span x-text="sectorSeleccionado ? 'Sector seleccionado' : 'Seleccionar sector'"></span>
+                    <span class="text-lg" x-text="sectorAbierto ? '▼' : '▶'"></span>
+                </button>
+
+                <div x-show="sectorAbierto" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3" style="display: none;">
                     @php
-                        $precio = $sector->precios()
-                            ->where('evento_id', $evento->id)
-                            ->first();
+                        $sectores = $evento->sectoresDisponibles();
                     @endphp
-                    <button
-                        @click="seleccionarSector({{ $sector->id }}, '{{ $sector->nombre }}', {{ $precio?->precio ?? 0 }})"
-                        :class="sectorSeleccionado === {{ $sector->id }} ? 'ring-2 ring-red-600 bg-red-50' : 'hover:shadow-lg'"
-                        class="p-4 border border-gray-300 rounded-lg transition-all cursor-pointer">
-                        <p class="font-semibold">{{ $sector->nombre }}</p>
-                        <p class="text-red-600 font-bold">{{ number_format($precio?->precio ?? 0, 2) }}€</p>
-                    </button>
-                @endforeach
+                    @foreach ($sectores as $sector)
+                        @php
+                            $precio = $sector->precios()
+                                ->where('evento_id', $evento->id)
+                                ->first();
+                        @endphp
+                        <button
+                            @click="seleccionarSector({{ $sector->id }}, '{{ $sector->nombre }}', {{ $precio?->precio ?? 0 }}); sectorAbierto = false"
+                            :class="sectorSeleccionado === {{ $sector->id }} ? 'ring-2 ring-red-600 bg-red-50 border-red-600' : 'hover:shadow-lg border-gray-300'"
+                            class="p-4 border rounded-lg transition-all cursor-pointer text-left">
+                            <p class="font-semibold text-gray-900">{{ $sector->nombre }}</p>
+                            <p class="text-red-600 font-bold text-lg">{{ number_format($precio?->precio ?? 0, 2) }}€</p>
+                        </button>
+                    @endforeach
+                </div>
             </div>
 
             <!-- Asientos del sector seleccionado -->

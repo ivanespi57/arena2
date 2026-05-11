@@ -78,7 +78,11 @@ class Evento extends Model
     }
     public function totalAsientosDisponibles(): int
     {
-        return $this->sectoresDisponibles()->sum('capacidad');
+        return Asiento::whereIn('sector_id',
+                $this->sectoresDisponibles()->pluck('id'))
+            ->whereNotIn('id',
+                $this->entradas()->pluck('asiento_id'))
+            ->count();
     }
     public function totalEntradasVendidas(): int
     {

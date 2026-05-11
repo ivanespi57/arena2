@@ -29,7 +29,7 @@
                 <!-- Fecha y hora -->
                 <div class="flex items-center text-gray-700 mb-3">
                     <span class="text-lg mr-2">📅</span>
-                    <span>{{ $evento->fecha->format('d/m/Y') }} a las {{ $evento->hora }}</span>
+                    <span>{{ $evento->fecha->format('d/m/Y') }} a las {{ \Carbon\Carbon::parse($evento->hora)->format('H:i') }}</span>
                 </div>
 
                 <!-- Disponibilidad -->

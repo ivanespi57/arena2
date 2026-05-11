@@ -30,7 +30,7 @@
                     <div>
                         <p class="text-gray-600 text-sm">📅 Fecha y hora</p>
                         <p class="font-semibold">
-                            {{ $entrada->evento->fecha->format('d/m/Y') }} a las {{ $entrada->evento->hora }}
+                            {{ $entrada->evento->fecha->format('d/m/Y') }} a las {{ \Carbon\Carbon::parse($entrada->evento->hora)->format('H:i') }}
                         </p>
                     </div>
 

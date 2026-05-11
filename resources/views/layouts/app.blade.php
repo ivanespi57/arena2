@@ -14,28 +14,31 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">🎭 Roig Arena</a>
+                    <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">Roig Arena</a>
                 </div>
 
                 <!-- Menú central -->
-                <div class="flex space-x-6">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-red-600">Eventos</a>
+                <div class="flex space-x-8">
+                    <a href="{{ route('home') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Eventos</a>
                     @auth
-                        <a href="{{ route('entradas.index') }}" class="text-gray-700 hover:text-red-600">Mis Entradas</a>
+                        <a href="{{ route('entradas.index') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Mis Entradas</a>
                     @endauth
                 </div>
 
                 <!-- Botones derecha -->
-                <div class="flex space-x-4">
+                <div class="flex items-center space-x-4">
                     @auth
-                        <span class="text-gray-700 text-sm">{{ auth()->user()->nombre }}</span>
+                        <span class="text-gray-700 text-sm font-semibold">{{ auth()->user()->nombre }}</span>
+                        @if(auth()->user()->is_admin)
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold">Admin</span>
+                        @endif
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
-                            <button type="submit" class="text-gray-700 hover:text-red-600">Cerrar sesión</button>
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-semibold transition-colors">Cerrar sesión</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-red-600">Iniciar sesión</a>
-                        <a href="{{ route('register') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Registrarse</a>
+                        <a href="{{ route('login') }}" class="text-gray-700 font-medium hover:text-red-600 transition-colors">Iniciar sesión</a>
+                        <a href="{{ route('register') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-semibold transition-colors">Registrarse</a>
                     @endauth
                 </div>
             </div>
