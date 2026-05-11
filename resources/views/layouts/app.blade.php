@@ -18,11 +18,11 @@
                 </div>
 
                 <!-- Menú central -->
-                <div class="flex gap-32">
+                <div class="flex gap-48">
                     <a href="{{ route('home') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Eventos</a>
-
+                    @auth
                         <a href="{{ route('entradas.index') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Mis Entradas</a>
-
+                    @endauth
                 </div>
 
                 <!-- Botones derecha (flex-1 para empujar a la derecha) -->
