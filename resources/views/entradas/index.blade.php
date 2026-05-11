@@ -51,7 +51,11 @@
                     <!-- Código QR -->
                     <div>
                         <p class="text-gray-600 text-sm">🔐 Código QR</p>
-                        <p class="font-mono text-xs break-all bg-gray-100 p-2 rounded">{{ $entrada->codigo_qr }}</p>
+                        <div class="bg-white p-3 rounded border border-gray-200 flex justify-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ urlencode($entrada->codigo_qr) }}"
+                                 alt="QR Code"
+                                 class="w-32 h-32">
+                        </div>
                     </div>
 
                     <!-- Estado -->

@@ -234,6 +234,31 @@ function selectorAsientos() {
                     precio: this.precioSector
                 });
             }
+            // Re-renderizar para actualizar colores
+            const container = document.getElementById('asientosContainer');
+            const filas = {};
+
+            // Agrupar asientos del DOM
+            const botones = container.querySelectorAll('button');
+            botones.forEach(boton => {
+                const className = boton.className;
+                if (className.includes('bg-gray-200') || className.includes('bg-red-600')) {
+                    const esRojo = className.includes('bg-red-600');
+                    const numero = boton.textContent;
+                    const fila = boton.closest('.flex.items-center.gap-4')?.querySelector('span')?.textContent;
+
+                    if (fila) {
+                        // Encontrar el asiento en asientosSeleccionados
+                        const estaSel = this.asientosSeleccionados.some(a => a.nombre === `${fila}, Asiento ${numero}`);
+
+                        if (estaSel && !esRojo) {
+                            boton.className = 'w-10 h-10 rounded text-sm font-semibold transition-colors bg-red-600 text-white border-2 border-red-800';
+                        } else if (!estaSel && esRojo) {
+                            boton.className = 'w-10 h-10 rounded text-sm font-semibold transition-colors bg-gray-200 text-gray-900 hover:bg-gray-300 border-2 border-gray-300';
+                        }
+                    }
+                }
+            });
         },
 
         desseleccionarAsiento(asientoId) {
