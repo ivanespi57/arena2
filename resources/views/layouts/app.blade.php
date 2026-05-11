@@ -17,8 +17,8 @@
                     <a href="{{ route('home') }}" class="text-2xl font-bold text-red-600">Roig Arena</a>
                 </div>
 
-                <!-- Menú central (centrado) -->
-                <div class="flex gap-64">
+                <!-- Menú central -->
+                <div class="flex items-center gap-8">
                     <a href="{{ route('home') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Eventos</a>
                     @auth
                         <a href="{{ route('entradas.index') }}" class="text-gray-700 font-medium hover:text-red-600 hover:border-b-2 hover:border-red-600 transition-all pb-1">Mis Entradas</a>
