@@ -30,6 +30,7 @@ Route::get('/eventos', [EventoWebController::class, 'index'])->name('eventos.ind
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/eventos/create', [EventoWebController::class, 'create'])->name('eventos.create');
+    Route::post('/eventos',       [EventoWebController::class, 'store'])->name('eventos.store');
 
     Route::prefix('admin')->group(function () {
         Route::get('/',                        [AdminWebController::class, 'index'])->name('admin.index');

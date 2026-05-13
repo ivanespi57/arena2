@@ -88,7 +88,7 @@
             const json = await res.json();
 
             if (res.ok) {
-                successEl.textContent  = '✅ Evento actualizado correctamente.';
+                successEl.textContent  = 'Evento actualizado correctamente.';
                 successEl.style.display = 'block';
             } else {
                 const msgs = json.errors

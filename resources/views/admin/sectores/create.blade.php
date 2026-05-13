@@ -69,7 +69,7 @@
             const json = await res.json();
 
             if (res.ok) {
-                successEl.textContent   = '✅ Sector creado correctamente.';
+                successEl.textContent   = 'Sector creado correctamente.';
                 successEl.style.display = 'block';
                 form.reset();
                 form.activo.checked = true;

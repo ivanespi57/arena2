@@ -177,7 +177,7 @@
 
     <div id="seccion-compra" class="mt-3" style="display:none;">
         <p style="color:#27ae60; font-weight:600; margin-bottom:0.75rem;">
-            ✅ Asientos reservados — tienes 15 minutos para confirmar
+            Asientos reservados — tienes 15 minutos para confirmar
         </p>
         <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
             <button id="btn-comprar" class="btn btn-primary" onclick="confirmarCompra()">
@@ -214,10 +214,10 @@
             if (evento.poster_url) {
                 document.getElementById('poster-wrapper').innerHTML =
                     `<img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-banner"
-                          onerror="this.parentElement.innerHTML='<div class=poster-placeholder>🏟</div>'">`;
+                          onerror="this.parentElement.innerHTML='<div class=poster-placeholder></div>'">`;
             } else {
                 document.getElementById('poster-wrapper').innerHTML =
-                    `<div class="poster-placeholder">🏟</div>`;
+                    `<div class="poster-placeholder"></div>`;
             }
 
             const fecha = evento.fecha ? evento.fecha.substring(0, 10).split('-').reverse().join('/') : '';
@@ -225,11 +225,11 @@
 
             document.getElementById('evento-nombre').textContent  = evento.nombre;
             document.getElementById('evento-fecha').textContent   =
-                `📅 ${fecha}${hora ? ' — 🕐 ' + hora : ''}`;
+                `${fecha}${hora ? ' — ' + hora : ''}`;
             document.getElementById('evento-descripcion').textContent =
                 evento.descripcion_larga || evento.descripcion_corta || '';
             document.getElementById('evento-disponibles').innerHTML =
-                `<span class="badge-disponibles">🎟 ${asientos_disponibles} asientos disponibles</span>`;
+                `<span class="badge-disponibles">${asientos_disponibles} asientos disponibles</span>`;
 
             // Guardar precios por sectorId
             sectores_disponibles.forEach(s => {
@@ -397,7 +397,7 @@
                     <strong>${precioStr} €</strong>
                     <button type="button"
                         onclick="toggleAsiento(JSON.parse(decodeURIComponent('${dataAttr}')))"
-                        style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.1rem; line-height:1;">✕</button>
+                        style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size:1.1rem; line-height:1;">&times;</button>
                 </span>
             </div>`;
         }).join('');

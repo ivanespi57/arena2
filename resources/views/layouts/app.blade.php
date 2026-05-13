@@ -396,7 +396,7 @@
 <body>
     <header>
         <div class="container">
-            <a href="{{ route('home') }}" class="logo">🏟 Roig Arena</a>
+            <a href="{{ route('home') }}" class="logo">Roig Arena</a>
             <nav>
                 <a href="{{ route('eventos.index') }}" class="nav-link">Eventos</a>
 

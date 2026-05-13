@@ -10,7 +10,7 @@
 
 @if(empty($entradas))
     <div class="card text-center">
-        <p style="font-size:1.1rem; color:#666; margin-bottom:1rem;">Todavía no tienes entradas.</p>
+        <p style="font-size:1.1rem; color:#666; margin-bottom:1rem;">Todavia no tienes entradas.</p>
         <a href="{{ route('eventos.index') }}" class="btn btn-primary">Ver eventos disponibles</a>
     </div>
 @else
@@ -21,9 +21,9 @@
                 <div>
                     <h3 style="margin-bottom:0.2rem;">{{ $entrada['evento'] }}</h3>
                     <p style="color:#666; font-size:0.9rem;">
-                        📅 {{ $entrada['fecha'] }}
+                        {{ $entrada['fecha'] }}
                         @if(!empty($entrada['hora']))
-                            — 🕐 {{ $entrada['hora'] }}
+                            — {{ \Carbon\Carbon::parse($entrada['hora'])->format('H:i') }}
                         @endif
                     </p>
                 </div>
@@ -32,7 +32,7 @@
                     color:{{ $entrada['valida'] ? '#155724' : '#721c24' }};
                     padding:0.25rem 0.75rem; border-radius:20px;
                     font-size:0.8rem; font-weight:600; white-space:nowrap; flex-shrink:0;">
-                    {{ $entrada['valida'] ? 'Válida' : 'Expirada' }}
+                    {{ $entrada['valida'] ? 'Valida' : 'Expirada' }}
                 </span>
             </div>
 

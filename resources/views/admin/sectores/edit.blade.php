@@ -99,7 +99,7 @@
             const json = await res.json();
 
             if (res.ok) {
-                successEl.textContent   = '✅ Sector actualizado correctamente.';
+                successEl.textContent   = 'Sector actualizado correctamente.';
                 successEl.style.display = 'block';
             } else {
                 const msgs = json.errors

@@ -11,7 +11,7 @@
             background:{{ ($entrada['valida'] ?? true) ? '#d4edda' : '#f8d7da' }};
             color:{{ ($entrada['valida'] ?? true) ? '#155724' : '#721c24' }};
             padding:0.4rem 1rem; border-radius:20px; font-weight:600; font-size:0.9rem;">
-            {{ ($entrada['valida'] ?? true) ? '✅ Válida' : '❌ Expirada' }}
+            {{ ($entrada['valida'] ?? true) ? 'Valida' : 'Expirada' }}
         </span>
     </div>
 
@@ -19,9 +19,9 @@
 
     <h2 style="font-size:1.3rem; margin-bottom:0.25rem;">{{ $entrada['evento'] }}</h2>
     <p style="color:#666; margin-bottom:1.5rem;">
-        📅 {{ $entrada['fecha'] }}
+        {{ $entrada['fecha'] }}
         @if(!empty($entrada['hora']))
-            — 🕐 {{ $entrada['hora'] }}
+            — {{ \Carbon\Carbon::parse($entrada['hora'])->format('H:i') }}
         @endif
     </p>
 
@@ -44,13 +44,13 @@
         </table>
     </div>
 
-    {{-- Código QR --}}
+    {{-- Codigo QR --}}
     <div style="text-align:center; padding:1.5rem; background:#f8f9fa; border-radius:8px; margin-bottom:1.5rem;">
-        <p style="font-size:0.85rem; color:#666; margin-bottom:0.75rem;">Código de acceso</p>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:0.75rem;">Codigo de acceso</p>
         <div style="background:white; display:inline-block; padding:1rem; border-radius:8px; border:2px solid #eee;">
             <img
                 src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($entrada['codigo_qr']) }}"
-                alt="Código QR de la entrada"
+                alt="Codigo QR de la entrada"
                 style="display:block; width:200px; height:200px;"
             >
         </div>
@@ -61,7 +61,7 @@
 
     <div style="display:flex; gap:0.75rem;">
         <a href="{{ route('entradas.index') }}" class="btn btn-secondary">Mis entradas</a>
-        <a href="{{ route('eventos.index') }}" class="btn btn-primary">Ver más eventos</a>
+        <a href="{{ route('eventos.index') }}" class="btn btn-primary">Ver mas eventos</a>
     </div>
 </div>
 @endsection

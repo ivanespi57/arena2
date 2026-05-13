@@ -104,8 +104,8 @@
                                 <br><small style="color:#888;">{{ Str::limit($evento['descripcion_corta'], 60) }}</small>
                             @endif
                         </td>
-                        <td>{{ $evento['fecha'] }}</td>
-                        <td>{{ $evento['hora'] ?? '—' }}</td>
+                        <td>{{ $evento['fecha'] ? \Carbon\Carbon::parse($evento['fecha'])->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $evento['hora'] ? \Carbon\Carbon::parse($evento['hora'])->format('H:i') : '—' }}</td>
                         <td class="actions">
                             <a href="{{ route('eventos.show', $evento['id']) }}" class="btn-sm btn-sm-view">Ver</a>
                             <a href="{{ route('admin.eventos.edit', $evento['id']) }}" class="btn-sm btn-sm-edit">Editar</a>
