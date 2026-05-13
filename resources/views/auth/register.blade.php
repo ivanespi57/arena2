@@ -3,24 +3,43 @@
 @section('title', 'Registrarse | Roig Arena')
 
 @section('content')
-<div class="grid-2" style="max-width: 500px; margin: 0 auto;">
+<div style="max-width: 500px; margin: 0 auto;">
     <div class="card">
         <h1>Crear cuenta</h1>
 
-        <form id="register-form">
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
             <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" required>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="{{ old('nombre') }}" required autofocus>
+                @error('nombre')
+                    <span class="error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" value="{{ old('apellido') }}" required>
+                @error('apellido')
+                    <span class="error">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <span class="error">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
+                @error('password')
+                    <span class="error">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -36,44 +55,4 @@
         </p>
     </div>
 </div>
-
-@endsection
-
-@section('scripts')
-<script>
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(e.target);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            password_confirmation: formData.get('password_confirmation')
-        };
-
-        try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', result.token);
-                window.location.href = '/dashboard';
-            } else {
-                alert(result.message || 'Error en el registro');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error en el registro');
-        }
-    });
-</script>
 @endsection

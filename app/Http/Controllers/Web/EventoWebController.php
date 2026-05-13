@@ -19,7 +19,7 @@ class EventoWebController extends Controller
      */
     public function show($id)
     {
-        return view('eventos.show');
+        return view('eventos.show', ['eventoId' => $id]);
     }
 
     /**
@@ -28,9 +28,5 @@ class EventoWebController extends Controller
     public function create()
     {
         return view('eventos.create');
-    }
-}
-
-        return view('eventos.show', compact('evento'));
     }
 }

@@ -3,34 +3,37 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Entrada;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class EntradaWebController extends Controller
 {
-    /**
-     * Listar mis entradas
-     */
-    public function index(Request $request)
+    private function apiUrl(string $path): string
     {
-        $entradas = $request->user()
-            ->entradas()
-            ->with(['evento', 'asiento.sector'])
-            ->latest()
-            ->get();
+        return 'http://localhost/api/' . ltrim($path, '/');
+    }
+
+    public function index()
+    {
+        $response = Http::withToken(session('api_token'))
+            ->accept('application/json')
+            ->get($this->apiUrl('entradas'));
+
+        $entradas = $response->successful() ? $response->json('data', []) : [];
 
         return view('entradas.index', compact('entradas'));
     }
 
-    /**
-     * Ver detalle de una entrada
-     */
     public function show($id)
     {
-        $entrada = Entrada::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->with(['evento', 'asiento.sector'])
-            ->firstOrFail();
+        $response = Http::withToken(session('api_token'))
+            ->accept('application/json')
+            ->get($this->apiUrl("entradas/{$id}"));
+
+        if ($response->failed()) {
+            abort(404, 'Entrada no encontrada');
+        }
+
+        $entrada = $response->json('data');
 
         return view('entradas.show', compact('entrada'));
     }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="api-token" content="{{ session('api_token', '') }}">
 
     <title>@yield('title', 'Roig Arena')</title>
 
@@ -303,6 +304,10 @@
                 <a href="{{ route('eventos.index') }}">Eventos</a>
                 @auth
                     <a href="{{ route('dashboard') }}">Dashboard</a>
+                    <a href="{{ route('entradas.index') }}">Mis entradas</a>
+                    @if(auth()->user()->es_admin ?? false)
+                        <a href="{{ route('eventos.create') }}">Crear evento</a>
+                    @endif
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
                         <button type="submit" class="btn-logout">Logout</button>
@@ -336,11 +341,8 @@
     </footer>
 
     <script>
-        // Setup CSRF token para requests AJAX
-        const token = document.querySelector('meta[name="csrf-token"]')?.content;
-        if (token) {
-            window.csrfToken = token;
-        }
+        window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        window.apiToken = document.querySelector('meta[name="api-token"]')?.content || '';
     </script>
 
     @yield('scripts')
