@@ -446,7 +446,31 @@
 
     <script>
         window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-        window.apiToken = document.querySelector('meta[name="api-token"]')?.content || '';
+        window.apiToken  = document.querySelector('meta[name="api-token"]')?.content || '';
+
+        // Añadir CSRF + Authorization automáticamente a todas las llamadas API mutables
+        (function () {
+            const _fetch = window.fetch;
+            window.fetch = function (url, opts) {
+                opts = opts || {};
+                const method = (opts.method || 'GET').toUpperCase();
+                const isApiMutable = typeof url === 'string'
+                    && url.startsWith('/api')
+                    && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
+
+                if (isApiMutable) {
+                    opts.headers = Object.assign(
+                        {
+                            'X-CSRF-TOKEN':  window.csrfToken  || '',
+                            'Authorization': 'Bearer ' + (window.apiToken || ''),
+                            'Accept':        'application/json',
+                        },
+                        opts.headers || {}
+                    );
+                }
+                return _fetch.call(this, url, opts);
+            };
+        })();
     </script>
 
     @yield('scripts')
