@@ -35,7 +35,7 @@
         <div class="grid-2">
             <div class="form-group">
                 <label for="fecha">Fecha *</label>
-                <input type="date" id="fecha" name="fecha" value="{{ $evento['fecha'] }}" required>
+                <input type="date" id="fecha" name="fecha" value="{{ substr($evento['fecha'] ?? '', 0, 10) }}" required>
             </div>
             <div class="form-group">
                 <label for="hora">Hora *</label>

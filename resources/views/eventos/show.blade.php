@@ -220,9 +220,12 @@
                     `<div class="poster-placeholder">🏟</div>`;
             }
 
+            const fecha = evento.fecha ? evento.fecha.substring(0, 10).split('-').reverse().join('/') : '';
+            const hora  = evento.hora  ? evento.hora.substring(0, 5) : '';
+
             document.getElementById('evento-nombre').textContent  = evento.nombre;
             document.getElementById('evento-fecha').textContent   =
-                `📅 ${evento.fecha}${evento.hora ? ' — 🕐 ' + evento.hora : ''}`;
+                `📅 ${fecha}${hora ? ' — 🕐 ' + hora : ''}`;
             document.getElementById('evento-descripcion').textContent =
                 evento.descripcion_larga || evento.descripcion_corta || '';
             document.getElementById('evento-disponibles').innerHTML =
@@ -423,7 +426,7 @@
                 });
                 const json = await res.json();
                 if (!res.ok) {
-                    alert(json.error || `Error reservando fila ${asiento.fila} nº ${asiento.numero}`);
+                    alert(json.error || json.message || `Error reservando fila ${asiento.fila} nº ${asiento.numero}`);
                     btn.disabled    = false;
                     btn.textContent = 'Reservar (15 min)';
                     return;
