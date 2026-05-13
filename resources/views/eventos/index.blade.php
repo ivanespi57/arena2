@@ -22,14 +22,19 @@
 
             if (data.data && data.data.length) {
                 data.data.forEach(evento => {
+                    const imagen = evento.poster_url
+                        ? `<img src="${evento.poster_url}" alt="${evento.nombre}"
+                                style="width:100%; height:100%; object-fit:cover;"
+                                onerror="this.parentElement.innerHTML='🎭'">`
+                        : '🎭';
                     container.innerHTML += `
                         <div class="event-card">
-                            <div class="event-card-image">🎭</div>
+                            <div class="event-card-image">${imagen}</div>
                             <div class="event-card-content">
                                 <div class="event-card-title">${evento.nombre}</div>
-                                <div class="event-card-date">${evento.fecha} ${evento.hora ? '— ' + evento.hora : ''}</div>
-                                <p>${evento.descripcion_corta ? evento.descripcion_corta.substring(0, 100) : ''}</p>
-                                <a href="/eventos/${evento.id}" class="btn btn-primary mt-2">Ver evento</a>
+                                <div class="event-card-date">📅 ${evento.fecha}${evento.hora ? ' — 🕐 ' + evento.hora : ''}</div>
+                                <p style="color:#555; font-size:0.9rem; margin-bottom:0.75rem;">${evento.descripcion_corta ? evento.descripcion_corta.substring(0, 100) : ''}</p>
+                                <a href="/eventos/${evento.id}" class="btn btn-primary" style="width:100%; text-align:center;">Ver evento →</a>
                             </div>
                         </div>
                     `;

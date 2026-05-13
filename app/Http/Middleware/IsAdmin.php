@@ -11,9 +11,10 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user() || !$request->user()->isAdmin()) {
-            return response()->json([
-                'error' => 'No tienes permisos de administrador',
-            ], 403);
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'No tienes permisos de administrador'], 403);
+            }
+            abort(403, 'Acceso denegado');
         }
 
         return $next($request);

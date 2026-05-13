@@ -9,7 +9,7 @@ class EntradaWebController extends Controller
 {
     private function apiUrl(string $path): string
     {
-        return 'http://localhost/api/' . ltrim($path, '/');
+        return 'http://host.docker.internal/api/' . ltrim($path, '/');
     }
 
     public function index()

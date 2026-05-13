@@ -36,12 +36,12 @@
             padding: 0 20px;
         }
 
-        /* Header & Navigation */
+        /* ── Header & Navigation ── */
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         header .container {
@@ -51,39 +51,117 @@
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 1.6rem;
+            font-weight: 800;
             text-decoration: none;
             color: white;
+            letter-spacing: -0.5px;
         }
 
         nav {
             display: flex;
-            gap: 2rem;
+            gap: 0.5rem;
             align-items: center;
         }
 
-        nav a, nav button {
+        /* Plain nav link */
+        .nav-link {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+            color: white;
+        }
+
+        /* Divider between groups */
+        .nav-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(255,255,255,0.25);
+            margin: 0 0.25rem;
+        }
+
+        /* Outlined button (Login) */
+        .nav-btn-outline {
             color: white;
             text-decoration: none;
-            border: none;
-            background: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            border: 2px solid rgba(255,255,255,0.6);
+            background: transparent;
             cursor: pointer;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: background 0.2s;
+            transition: background 0.15s, border-color 0.15s;
         }
 
-        nav a:hover, nav button:hover {
-            background: rgba(255,255,255,0.1);
+        .nav-btn-outline:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: white;
         }
 
-        nav .btn-logout {
-            background: rgba(255,255,255,0.2);
+        /* Solid white button (Register) */
+        .nav-btn-solid {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            background: white;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
         }
 
-        /* Main Content */
+        .nav-btn-solid:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-1px);
+        }
+
+        /* Admin button (yellow accent) */
+        .nav-btn-admin {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            background: #ffd700;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .nav-btn-admin:hover {
+            background: #f0c800;
+        }
+
+        /* Logout button */
+        .nav-btn-logout {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            background: rgba(231,76,60,0.7);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+        }
+
+        .nav-btn-logout:hover {
+            background: rgba(231,76,60,0.9);
+        }
+
+        /* ── Main Content ── */
         main {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
@@ -97,7 +175,7 @@
             margin-bottom: 2rem;
         }
 
-        /* Buttons */
+        /* ── Buttons ── */
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -148,7 +226,16 @@
             background: #229954;
         }
 
-        /* Forms */
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d68910;
+        }
+
+        /* ── Forms ── */
         form {
             display: flex;
             flex-direction: column;
@@ -201,7 +288,7 @@
             margin-bottom: 1rem;
         }
 
-        /* Grid */
+        /* ── Grid ── */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -209,7 +296,9 @@
         }
 
         .grid-2 {
+            display: grid;
             grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
         }
 
         @media (max-width: 768px) {
@@ -218,21 +307,24 @@
             }
 
             nav {
-                gap: 1rem;
+                gap: 0.3rem;
+                flex-wrap: wrap;
+                justify-content: flex-end;
             }
 
             header .container {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.75rem;
             }
         }
 
-        /* Event Cards */
+        /* ── Event Cards ── */
         .event-card {
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             overflow: hidden;
             transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
         }
 
         .event-card:hover {
@@ -249,6 +341,13 @@
             justify-content: center;
             color: white;
             font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .event-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .event-card-content {
@@ -256,7 +355,7 @@
         }
 
         .event-card-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
@@ -267,19 +366,17 @@
             margin-bottom: 1rem;
         }
 
-        /* Footer */
+        /* ── Footer ── */
         footer {
-            background: #333;
-            color: white;
-            padding: 2rem;
+            background: #222;
+            color: #aaa;
+            padding: 1.5rem;
             text-align: center;
-            margin-top: 4rem;
+            font-size: 0.875rem;
         }
 
-        /* Utilities */
-        .text-center {
-            text-align: center;
-        }
+        /* ── Utilities ── */
+        .text-center { text-align: center; }
 
         .mt-1 { margin-top: 0.5rem; }
         .mt-2 { margin-top: 1rem; }
@@ -299,22 +396,29 @@
 <body>
     <header>
         <div class="container">
-            <a href="{{ route('home') }}" class="logo">🎭 Roig Arena</a>
+            <a href="{{ route('home') }}" class="logo">🏟 Roig Arena</a>
             <nav>
-                <a href="{{ route('eventos.index') }}">Eventos</a>
+                <a href="{{ route('eventos.index') }}" class="nav-link">Eventos</a>
+
                 @auth
-                    <a href="{{ route('dashboard') }}">Dashboard</a>
-                    <a href="{{ route('entradas.index') }}">Mis entradas</a>
-                    @if(auth()->user()->es_admin ?? false)
-                        <a href="{{ route('eventos.create') }}">Crear evento</a>
+                    <div class="nav-divider"></div>
+                    <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                    <a href="{{ route('entradas.index') }}" class="nav-link">Mis entradas</a>
+
+                    @if(auth()->user()->is_admin ?? false)
+                        <div class="nav-divider"></div>
+                        <a href="{{ route('admin.index') }}" class="nav-btn-admin">Admin</a>
                     @endif
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+
+                    <div class="nav-divider"></div>
+                    <form action="{{ route('logout') }}" method="POST" style="display:inline; margin:0;">
                         @csrf
-                        <button type="submit" class="btn-logout">Logout</button>
+                        <button type="submit" class="nav-btn-logout">Salir</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}">Login</a>
-                    <a href="{{ route('register') }}" class="btn btn-primary">Registrarse</a>
+                    <div class="nav-divider"></div>
+                    <a href="{{ route('login') }}" class="nav-btn-outline">Iniciar sesión</a>
+                    <a href="{{ route('register') }}" class="nav-btn-solid">Registrarse</a>
                 @endauth
             </nav>
         </div>

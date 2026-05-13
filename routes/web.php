@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthWebController;
 use App\Http\Controllers\Web\EventoWebController;
 use App\Http\Controllers\Web\EntradaWebController;
+use App\Http\Controllers\Web\AdminWebController;
 
 // ============================================
 // RUTAS PÚBLICAS
@@ -29,6 +30,13 @@ Route::get('/eventos', [EventoWebController::class, 'index'])->name('eventos.ind
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/eventos/create', [EventoWebController::class, 'create'])->name('eventos.create');
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/',                        [AdminWebController::class, 'index'])->name('admin.index');
+        Route::get('/eventos/{id}/edit',       [AdminWebController::class, 'editEvento'])->name('admin.eventos.edit');
+        Route::get('/sectores/create',         [AdminWebController::class, 'createSector'])->name('admin.sectores.create');
+        Route::get('/sectores/{id}/edit',      [AdminWebController::class, 'editSector'])->name('admin.sectores.edit');
+    });
 });
 
 // Esta ruta va después de /eventos/create para que "create" no sea capturado como {id}
