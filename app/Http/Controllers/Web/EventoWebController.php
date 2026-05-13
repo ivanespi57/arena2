@@ -3,30 +3,33 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Evento;
-use Illuminate\Http\Request;
 
 class EventoWebController extends Controller
 {
     /**
-     * Mostrar catálogo de eventos
+     * Mostrar listado de eventos
      */
     public function index()
     {
-        $eventos = Evento::futuros()
-            ->with(['precios.sector'])
-            ->get();
-
-        return view('eventos.index', compact('eventos'));
+        return view('eventos.index');
     }
 
     /**
-     * Mostrar detalle de evento y selector de asientos
+     * Mostrar detalle de evento
      */
     public function show($id)
     {
-        $evento = Evento::with(['precios.sector'])
-            ->findOrFail($id);
+        return view('eventos.show');
+    }
+
+    /**
+     * Mostrar formulario para crear evento (admin)
+     */
+    public function create()
+    {
+        return view('eventos.create');
+    }
+}
 
         return view('eventos.show', compact('evento'));
     }
