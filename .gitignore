@@ -25,3 +25,4 @@ Thumbs.db
 resources/react/node_modules/
 resources/react/dist/
 resources/react/.env.local
+*:Zone.Identifier
