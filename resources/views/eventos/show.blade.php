@@ -220,6 +220,7 @@
             if (evento.poster_url) {
                 document.getElementById('poster-wrapper').innerHTML =
                     `<img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-thumb"
+                          style="width:150px;height:110px;object-fit:cover;object-position:center;border-radius:8px;flex-shrink:0;display:block;"
                           onerror="this.outerHTML='<div class=poster-thumb-placeholder></div>'">`;
             } else {
                 document.getElementById('poster-wrapper').innerHTML =
