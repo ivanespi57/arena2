@@ -15,8 +15,8 @@
     }
 
     .poster-thumb-placeholder {
-        width: 140px;
-        height: 100px;
+        width: 190px;
+        height: 150px;
         border-radius: 8px;
         flex-shrink: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
