@@ -118,13 +118,13 @@
 
 <div class="card" id="evento-header">
     <div style="display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap;">
-        <div id="poster-wrapper"></div>
         <div style="flex:1; min-width:0;">
             <h1 id="evento-nombre" style="font-size:1.8rem; margin-bottom:0.25rem;">Cargando...</h1>
             <p id="evento-fecha" style="color:#666; font-size:1rem; margin-bottom:0.75rem;"></p>
             <p id="evento-descripcion" style="color:#444; line-height:1.7;"></p>
             <div id="evento-disponibles"></div>
         </div>
+        <div id="poster-wrapper"></div>
     </div>
 </div>
 
