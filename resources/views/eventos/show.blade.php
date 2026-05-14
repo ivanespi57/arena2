@@ -4,26 +4,29 @@
 
 @section('styles')
 <style>
-    .poster-wrapper-inner {
-        width: 100%;
-        height: 360px;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        overflow: hidden;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .poster-banner {
-        width: 100%;
-        height: 100%;
+    .poster-thumb {
+        width: 260px;
+        height: 180px;
         object-fit: cover;
         object-position: center;
+        border-radius: 8px;
+        flex-shrink: 0;
         display: block;
     }
 
-    .poster-placeholder {
-        width: 100%;
-        height: 100%;
+    .poster-thumb-placeholder {
+        width: 260px;
+        height: 180px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    @media (max-width: 600px) {
+        .poster-thumb, .poster-thumb-placeholder {
+            width: 100%;
+            height: 160px;
+        }
     }
 
     .sector-select {
@@ -113,14 +116,16 @@
 
 @section('content')
 
-{{-- Poster --}}
-<div id="poster-wrapper"></div>
-
 <div class="card" id="evento-header">
-    <h1 id="evento-nombre" style="font-size:1.8rem; margin-bottom:0.25rem;">Cargando...</h1>
-    <p id="evento-fecha" style="color:#666; font-size:1rem; margin-bottom:0.75rem;"></p>
-    <p id="evento-descripcion" style="color:#444; line-height:1.7;"></p>
-    <div id="evento-disponibles"></div>
+    <div style="display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap;">
+        <div id="poster-wrapper"></div>
+        <div style="flex:1; min-width:0;">
+            <h1 id="evento-nombre" style="font-size:1.8rem; margin-bottom:0.25rem;">Cargando...</h1>
+            <p id="evento-fecha" style="color:#666; font-size:1rem; margin-bottom:0.75rem;"></p>
+            <p id="evento-descripcion" style="color:#444; line-height:1.7;"></p>
+            <div id="evento-disponibles"></div>
+        </div>
+    </div>
 </div>
 
 <div class="grid-2">
@@ -214,13 +219,11 @@
             // Poster
             if (evento.poster_url) {
                 document.getElementById('poster-wrapper').innerHTML =
-                    `<div class="poster-wrapper-inner">
-                        <img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-banner"
-                             onerror="this.parentElement.className='poster-wrapper-inner'">
-                     </div>`;
+                    `<img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-thumb"
+                          onerror="this.outerHTML='<div class=poster-thumb-placeholder></div>'">`;
             } else {
                 document.getElementById('poster-wrapper').innerHTML =
-                    `<div class="poster-wrapper-inner"></div>`;
+                    `<div class="poster-thumb-placeholder"></div>`;
             }
 
             const fecha = evento.fecha ? evento.fecha.substring(0, 10).split('-').reverse().join('/') : '';
