@@ -5,8 +5,8 @@
 @section('styles')
 <style>
     .poster-thumb {
-        width: 195px;
-        height: 135px;
+        width: 140px;
+        height: 100px;
         object-fit: cover;
         object-position: center;
         border-radius: 8px;
@@ -15,8 +15,8 @@
     }
 
     .poster-thumb-placeholder {
-        width: 195px;
-        height: 135px;
+        width: 140px;
+        height: 100px;
         border-radius: 8px;
         flex-shrink: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
