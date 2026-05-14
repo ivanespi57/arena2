@@ -4,25 +4,26 @@
 
 @section('styles')
 <style>
-    .poster-banner {
+    .poster-wrapper-inner {
         width: 100%;
-        max-height: 320px;
-        object-fit: cover;
+        height: 360px;
         border-radius: 8px;
         margin-bottom: 1.5rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .poster-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
         display: block;
     }
 
     .poster-placeholder {
         width: 100%;
-        height: 200px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 4rem;
+        height: 100%;
     }
 
     .sector-select {
@@ -213,11 +214,13 @@
             // Poster
             if (evento.poster_url) {
                 document.getElementById('poster-wrapper').innerHTML =
-                    `<img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-banner"
-                          onerror="this.parentElement.innerHTML='<div class=poster-placeholder></div>'">`;
+                    `<div class="poster-wrapper-inner">
+                        <img src="${evento.poster_url}" alt="${evento.nombre}" class="poster-banner"
+                             onerror="this.parentElement.className='poster-wrapper-inner'">
+                     </div>`;
             } else {
                 document.getElementById('poster-wrapper').innerHTML =
-                    `<div class="poster-placeholder"></div>`;
+                    `<div class="poster-wrapper-inner"></div>`;
             }
 
             const fecha = evento.fecha ? evento.fecha.substring(0, 10).split('-').reverse().join('/') : '';
