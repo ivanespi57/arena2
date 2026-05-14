@@ -128,28 +128,19 @@
     </div>
 </div>
 
-<div class="grid-2">
-    {{-- Columna izquierda: selector de sector --}}
-    <div class="card">
-        <h2 style="margin-bottom:1rem;">Selecciona un sector</h2>
-        <div id="sectores-container">
-            <p style="color:#666;">Cargando sectores...</p>
+<div class="card">
+    {{-- Selector de sector + precio en una fila --}}
+    <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.25rem;">
+        <div style="flex:1; min-width:200px;">
+            <label style="font-weight:600; font-size:0.85rem; color:#555; display:block; margin-bottom:0.4rem;">Sector</label>
+            <div id="sectores-container">
+                <p style="color:#666;">Cargando sectores...</p>
+            </div>
         </div>
-        <div id="sector-info" style="margin-top:0.75rem; display:none;">
-            <p id="sector-precio-texto" style="font-size:1rem; color:#27ae60; font-weight:600;"></p>
+        <div id="sector-info" style="display:none;">
+            <p id="sector-precio-texto" style="font-size:1rem; color:#27ae60; font-weight:600; white-space:nowrap;"></p>
         </div>
-    </div>
-
-    {{-- Columna derecha: mapa de asientos --}}
-    <div class="card">
-        <h2 style="margin-bottom:0.25rem;">
-            Asientos
-            <span id="sector-nombre-titulo" style="font-weight:400; font-size:0.95rem; color:#666;"></span>
-        </h2>
-        <div id="asientos-container" style="min-height:80px;">
-            <p style="color:#888; margin-top:0.5rem;">Elige un sector para ver los asientos.</p>
-        </div>
-        <div class="leyenda mt-2">
+        <div class="leyenda" style="margin-left:auto;">
             <span class="leyenda-item">
                 <span class="leyenda-dot" style="background:#27ae60;"></span> Disponible
             </span>
@@ -160,6 +151,15 @@
                 <span class="leyenda-dot" style="background:#3498db;"></span> Seleccionado
             </span>
         </div>
+    </div>
+
+    {{-- Mapa de asientos --}}
+    <h2 style="margin-bottom:0.75rem; font-size:1.1rem;">
+        Asientos
+        <span id="sector-nombre-titulo" style="font-weight:400; font-size:0.95rem; color:#666;"></span>
+    </h2>
+    <div id="asientos-container" style="min-height:80px;">
+        <p style="color:#888;">Elige un sector para ver los asientos.</p>
     </div>
 </div>
 
