@@ -1,6 +1,6 @@
 # Roig Arena — Sistema de Venta de Entradas
 
-Aplicación web completa para la gestión y venta de entradas de eventos en el Roig Arena. Desarrollada con Laravel 12, incluye backend API REST y frontend Blade con autenticación, reservas con temporizador y generación de entradas con código QR.
+Aplicación web completa para la gestión y venta de entradas de eventos en el Roig Arena. Desarrollada con Laravel 12, incluye backend API REST y frontend Blade con autenticación, reservas con temporizador de 15 minutos y generación de entradas con código QR.
 
 ---
 
@@ -13,7 +13,7 @@ Aplicación web completa para la gestión y venta de entradas de eventos en el R
 | Base de datos | MySQL 8.4 |
 | Frontend | Blade + CSS + JS vanilla |
 | Infraestructura | Docker / Laravel Sail + AWS EC2 |
-| Tests | PHPUnit (43 tests) |
+| Tests | PHPUnit (49 tests) |
 
 ---
 
@@ -31,11 +31,6 @@ Aplicación web completa para la gestión y venta de entradas de eventos en el R
 - Panel de gestión de eventos (crear, editar, eliminar)
 - Al crear un evento se asignan automáticamente todos los sectores del estadio
 - Gestión de sectores (crear, editar, activar/desactivar)
-
-**Sistema**
-- Liberación automática de reservas expiradas cada minuto
-- Protección contra race condition con `lockForUpdate`
-- Transacciones de base de datos en operaciones críticas
 
 ---
 
@@ -88,32 +83,49 @@ resources/views/
 | usuarios | 4 |
 | eventos | 4 |
 | precios | 284 |
-| estado_asientos | 0 |
-| entradas | 0 |
+| estado_asientos | Se genera al reservar asientos |
+| entradas | Se genera al confirmar compra |
 
 ---
 
 ## Instalación y puesta en marcha
 
-### Requisitos
-- Docker Desktop con WSL2
+### Requisitos previos
+- Docker Desktop con WSL2 activado
 - Git
 
-### Pasos
+### Primera vez (entorno nuevo)
+
+El script `arena.sh` necesita que la carpeta `vendor/` exista para poder ejecutar Sail. Solo la primera vez hay que instalar las dependencias:
 
 ```bash
-# Clonar el repositorio
+# 1. Clonar el repositorio
 git clone <url-del-repo>
 cd arena2
 
-# Copiar variables de entorno
+# 2. Copiar variables de entorno
 cp .env.example .env
 
-# Ejecutar el script de arranque completo
+# 3. Instalar dependencias PHP (solo la primera vez, sin necesitar PHP local)
+docker run --rm \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs
+
+# 4. Generar clave de aplicación
+./vendor/bin/sail up -d && ./vendor/bin/sail artisan key:generate && ./vendor/bin/sail down
+```
+
+A partir de aquí ya puedes usar `arena.sh` con normalidad.
+
+### Uso normal (entorno ya configurado)
+
+```bash
 bash arena.sh
 ```
 
-El script `arena.sh` levanta los contenedores, ejecuta las migraciones, puebla la base de datos y verifica que todo funcione.
+Este script (ubicado fuera de la carpeta del proyecto) detiene los contenedores, los vuelve a levantar, espera a que MySQL esté listo, ejecuta las migraciones con seeders y lanza los tests automáticamente.
 
 ### Accesos locales
 
@@ -133,60 +145,46 @@ El script `arena.sh` levanta los contenedores, ejecuta las migraciones, puebla l
 
 ---
 
-## API REST
-
-### Rutas públicas
-```
-GET  /api/eventos
-GET  /api/eventos/{id}
-GET  /api/sectores
-GET  /api/eventos/{eventoId}/asientos
-GET  /api/eventos/{eventoId}/sectores/{sectorId}/asientos
-```
-
-### Rutas autenticadas (Bearer token)
-```
-POST   /api/reservas
-DELETE /api/reservas/{id}
-POST   /api/compras
-GET    /api/entradas
-GET    /api/entradas/{id}
-```
-
-### Rutas de administrador
-```
-POST   /api/admin/eventos
-PUT    /api/admin/eventos/{id}
-DELETE /api/admin/eventos/{id}
-POST   /api/admin/sectores
-PUT    /api/admin/sectores/{id}
-DELETE /api/admin/sectores/{id}
-```
-
----
-
 ## Tests
 
 ```bash
-# Ejecutar todos los tests
-sail artisan test
+./vendor/bin/sail artisan test
 ```
 
-43 tests en total — 31 Feature + 12 Unit — con 100% de éxito.
+49 tests en total — 27 Feature + 22 Unit.
+
+**Feature** (integración, prueban flujos completos via HTTP):
+
+| Archivo | Qué comprueba |
+|---|---|
+| `AuthTest.php` | Registro, login, logout y obtención de datos del usuario |
+| `EventoTest.php` | CRUD de eventos, listado de sectores, CRUD de sectores y consulta de asientos |
+| `ReservaTest.php` | Reservar asiento, cancelar, ver reservas propias y bloquear acceso a reservas ajenas |
+| `CompraTest.php` | Confirmar compra, rechazar reservas expiradas o de otro usuario y generación de QR |
+
+**Unit** (prueban piezas de código de forma aislada):
+
+| Archivo | Qué comprueba |
+|---|---|
+| `ModeloTest.php` | Relaciones Eloquent, soft deletes, métodos de los modelos y unicidad del QR |
+| `ReservaServiceTest.php` | Lógica del servicio de reservas: reservar, cancelar y filtrar expiradas |
+| `CompraServiceTest.php` | Lógica del servicio de compra: procesar, rollback en error y compra múltiple |
+| `LiberarReservasServiceTest.php` | Liberación automática de reservas expiradas sin afectar a las vendidas |
 
 ---
 
 ## Despliegue en producción (AWS EC2)
 
-El proyecto está desplegado en EC2 con Laravel Sail. Para actualizar:
+El proyecto está desplegado en EC2 con Laravel Sail. Para actualizar tras hacer cambios:
 
 ```bash
-# En el servidor
+# En el servidor EC2
 cd arena2
 git pull
 ```
 
-Para reiniciar desde cero (migrar y sembrar datos):
+Para reiniciar desde cero (migrar y sembrar todos los datos):
+
 ```bash
 bash arena.sh
 ```

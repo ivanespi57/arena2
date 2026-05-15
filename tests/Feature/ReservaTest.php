@@ -102,4 +102,17 @@ class ReservaTest extends TestCase
 
         $response->assertStatus(400);
     }
+
+    public function test_usuario_no_autenticado_no_puede_reservar()
+    {
+        $evento  = Evento::factory()->create();
+        $asiento = Asiento::factory()->create();
+
+        $response = $this->postJson('/api/reservas', [
+            'evento_id'  => $evento->id,
+            'asiento_id' => $asiento->id,
+        ]);
+
+        $response->assertStatus(401);
+    }
 }

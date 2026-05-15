@@ -96,4 +96,16 @@ class ModeloTest extends TestCase
 
         $this->assertNotEquals($entrada1->codigo_qr, $entrada2->codigo_qr);
     }
+
+    public function test_asiento_tiene_nombre_completo()
+    {
+        $sector  = Sector::factory()->create(['nombre' => 'Pista']);
+        $asiento = Asiento::factory()->create([
+            'sector_id' => $sector->id,
+            'fila'      => 1,
+            'numero'    => 5,
+        ]);
+
+        $this->assertStringContainsString('Pista', $asiento->nombreCompleto());
+    }
 }

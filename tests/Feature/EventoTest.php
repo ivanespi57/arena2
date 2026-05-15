@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Evento;
+use App\Models\Sector;
+use App\Models\Asiento;
+use App\Models\Precio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EventoTest extends TestCase
@@ -100,5 +103,83 @@ class EventoTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertSoftDeleted('eventos', ['id' => $evento->id]);
+    }
+
+    // ── Sectores ──────────────────────────────────────────────────────
+
+    public function test_puede_listar_sectores_activos()
+    {
+        Sector::factory()->count(3)->create(['activo' => true]);
+        Sector::factory()->create(['activo' => false]);
+
+        $response = $this->getJson('/api/sectores');
+
+        $response->assertStatus(200);
+        $this->assertCount(3, $response->json('data'));
+    }
+
+    public function test_admin_puede_crear_sector()
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $response = $this->actingAs($admin)->postJson('/api/admin/sectores', [
+            'nombre'      => 'Tribuna Norte',
+            'descripcion' => 'Sector norte del estadio',
+            'activo'      => true,
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('sectores', ['nombre' => 'Tribuna Norte']);
+    }
+
+    public function test_admin_puede_actualizar_sector()
+    {
+        $admin  = User::factory()->create(['is_admin' => true]);
+        $sector = Sector::factory()->create(['nombre' => 'Pista']);
+
+        $response = $this->actingAs($admin)->putJson("/api/admin/sectores/{$sector->id}", [
+            'nombre' => 'Pista Principal',
+            'activo' => true,
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('sectores', ['id' => $sector->id, 'nombre' => 'Pista Principal']);
+    }
+
+    public function test_admin_puede_eliminar_sector()
+    {
+        $admin  = User::factory()->create(['is_admin' => true]);
+        $sector = Sector::factory()->create();
+
+        $response = $this->actingAs($admin)->deleteJson("/api/admin/sectores/{$sector->id}");
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('sectores', ['id' => $sector->id]);
+    }
+
+    // ── Asientos ─────────────────────────────────────────────────────
+
+    public function test_puede_ver_asientos_de_evento()
+    {
+        $sector  = Sector::factory()->create();
+        $evento  = Evento::factory()->create();
+        Asiento::factory()->count(5)->create(['sector_id' => $sector->id]);
+        Precio::factory()->create(['evento_id' => $evento->id, 'sector_id' => $sector->id]);
+
+        $response = $this->getJson("/api/eventos/{$evento->id}/asientos");
+
+        $response->assertStatus(200);
+    }
+
+    public function test_puede_ver_asientos_por_sector()
+    {
+        $sector  = Sector::factory()->create();
+        $evento  = Evento::factory()->create();
+        Asiento::factory()->count(3)->create(['sector_id' => $sector->id]);
+        Precio::factory()->create(['evento_id' => $evento->id, 'sector_id' => $sector->id]);
+
+        $response = $this->getJson("/api/eventos/{$evento->id}/sectores/{$sector->id}/asientos");
+
+        $response->assertStatus(200);
     }
 }
