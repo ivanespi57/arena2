@@ -1,59 +1,192 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Roig Arena — Sistema de Venta de Entradas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web completa para la gestión y venta de entradas de eventos en el Roig Arena. Desarrollada con Laravel 12, incluye backend API REST y frontend Blade con autenticación, reservas con temporizador y generación de entradas con código QR.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologías
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Capa | Tecnología |
+|---|---|
+| Backend | Laravel 12 + PHP 8.3 |
+| Autenticación | Laravel Sanctum |
+| Base de datos | MySQL 8.4 |
+| Frontend | Blade + CSS + JS vanilla |
+| Infraestructura | Docker / Laravel Sail + AWS EC2 |
+| Tests | PHPUnit (43 tests) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Funcionalidades
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Usuario**
+- Registro e inicio de sesión
+- Ver eventos disponibles con imagen, fecha y descripción
+- Seleccionar sector y ver mapa de asientos en tiempo real
+- Reservar asientos (carrito con temporizador de 15 minutos)
+- Confirmar compra y obtener entrada con código QR
+- Consultar historial de entradas
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**Administrador**
+- Panel de gestión de eventos (crear, editar, eliminar)
+- Al crear un evento se asignan automáticamente todos los sectores del estadio
+- Gestión de sectores (crear, editar, activar/desactivar)
 
-## Laravel Sponsors
+**Sistema**
+- Liberación automática de reservas expiradas cada minuto
+- Protección contra race condition con `lockForUpdate`
+- Transacciones de base de datos en operaciones críticas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Estructura del proyecto
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```
+app/
+├── Http/Controllers/
+│   ├── Auth/AuthController.php
+│   ├── Web/                        # Controladores de vistas Blade
+│   │   ├── AdminWebController.php
+│   │   ├── AuthWebController.php
+│   │   ├── EntradaWebController.php
+│   │   └── EventoWebController.php
+│   ├── AsientoController.php
+│   ├── CompraController.php
+│   ├── EntradaController.php
+│   ├── EventoController.php
+│   ├── ReservaController.php
+│   └── SectorController.php
+├── Models/                         # Evento, Sector, Asiento, Precio,
+│                                   # EstadoAsiento, Entrada, User
+├── Services/
+│   ├── ReservaService.php
+│   ├── CompraService.php
+│   └── LiberarReservasService.php
+└── Http/Resources/                 # 7 API Resources
 
-## Contributing
+database/
+├── migrations/                     # 5 migraciones
+└── seeders/                        # 71 sectores, 14.896 asientos, 4 eventos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+resources/views/
+├── layouts/app.blade.php
+├── home.blade.php
+├── eventos/                        # index, show, create
+├── entradas/                       # index, show (con QR)
+├── admin/                          # index, eventos/edit, sectores/create|edit
+└── auth/                           # login, register, dashboard, profile
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Base de datos
 
-## Security Vulnerabilities
+| Tabla | Registros (inicial) |
+|---|---|
+| sectores | 71 |
+| asientos | 14.896 |
+| usuarios | 4 |
+| eventos | 4 |
+| precios | 284 |
+| estado_asientos | 0 |
+| entradas | 0 |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Instalación y puesta en marcha
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Requisitos
+- Docker Desktop con WSL2
+- Git
+
+### Pasos
+
+```bash
+# Clonar el repositorio
+git clone <url-del-repo>
+cd arena2
+
+# Copiar variables de entorno
+cp .env.example .env
+
+# Ejecutar el script de arranque completo
+bash arena.sh
+```
+
+El script `arena.sh` levanta los contenedores, ejecuta las migraciones, puebla la base de datos y verifica que todo funcione.
+
+### Accesos locales
+
+| Servicio | URL |
+|---|---|
+| Aplicación | http://localhost |
+| API | http://localhost/api/eventos |
+| phpMyAdmin | http://localhost:8080 |
+
+**Credenciales de prueba**
+
+| Rol | Email | Contraseña |
+|---|---|---|
+| Administrador | admin@roigarena.com | admin123 |
+| Usuario | juan@example.com | password |
+| Usuario | maria@example.com | password |
+
+---
+
+## API REST
+
+### Rutas públicas
+```
+GET  /api/eventos
+GET  /api/eventos/{id}
+GET  /api/sectores
+GET  /api/eventos/{eventoId}/asientos
+GET  /api/eventos/{eventoId}/sectores/{sectorId}/asientos
+```
+
+### Rutas autenticadas (Bearer token)
+```
+POST   /api/reservas
+DELETE /api/reservas/{id}
+POST   /api/compras
+GET    /api/entradas
+GET    /api/entradas/{id}
+```
+
+### Rutas de administrador
+```
+POST   /api/admin/eventos
+PUT    /api/admin/eventos/{id}
+DELETE /api/admin/eventos/{id}
+POST   /api/admin/sectores
+PUT    /api/admin/sectores/{id}
+DELETE /api/admin/sectores/{id}
+```
+
+---
+
+## Tests
+
+```bash
+# Ejecutar todos los tests
+sail artisan test
+```
+
+43 tests en total — 31 Feature + 12 Unit — con 100% de éxito.
+
+---
+
+## Despliegue en producción (AWS EC2)
+
+El proyecto está desplegado en EC2 con Laravel Sail. Para actualizar:
+
+```bash
+# En el servidor
+cd arena2
+git pull
+```
+
+Para reiniciar desde cero (migrar y sembrar datos):
+```bash
+bash arena.sh
+```
