@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /home/ivan && ls -la)",
+      "Read(///wsl.localhost/Ubuntu/home/**)",
+      "Bash(find //wsl.localhost/Ubuntu/home/ivan/arena2 -type d | grep -v node_modules | grep -v \".git\" | sort)",
+      "Read(///wsl.localhost/Ubuntu/home/ivan/**)",
+      "Bash(find //wsl.localhost/Ubuntu/home/ivan/arena2 -type f \\\\\\( -name \"*.php\" -o -name \"*.js\" -o -name \"*.ts\" -o -name \"*.tsx\" -o -name \"*.jsx\" \\\\\\) ! -path \"*/vendor/*\" ! -path \"*/node_modules/*\" ! -path \"*/.git/*\" | sort)",
+      "Bash(find //wsl.localhost/Ubuntu/home/ivan/arena2 -type f -name \"*.md\" | grep -v vendor | grep -v \".git\" | head -10)"
+    ]
+  }
+}

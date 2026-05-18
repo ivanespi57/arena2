@@ -19,9 +19,7 @@ class Evento extends Model
         'fecha' => 'date',
         'hora'  => 'datetime:H:i',
     ];
-    // ============================================
-    // RELACIONES
-    // ============================================
+    // Relaciones
     public function precios()
     {
         return $this->hasMany(Precio::class);
