@@ -6,10 +6,6 @@ use App\Http\Controllers\Web\EventoWebController;
 use App\Http\Controllers\Web\EntradaWebController;
 use App\Http\Controllers\Web\AdminWebController;
 
-// ============================================
-// RUTAS PÚBLICAS
-// ============================================
-
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -21,12 +17,10 @@ Route::get('/register', [AuthWebController::class, 'showRegister'])->name('regis
 Route::post('/register', [AuthWebController::class, 'register'])->middleware('guest');
 Route::post('/logout', [AuthWebController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Eventos — create ANTES de {id} para evitar conflicto de rutas
+// /eventos/create debe ir antes de /eventos/{id} para que "create" no se trate como un ID
 Route::get('/eventos', [EventoWebController::class, 'index'])->name('eventos.index');
 
-// ============================================
-// RUTAS DE ADMINISTRADOR
-// ============================================
+// Rutas de administrador
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/eventos/create', [EventoWebController::class, 'create'])->name('eventos.create');
@@ -40,12 +34,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     });
 });
 
-// Esta ruta va después de /eventos/create para que "create" no sea capturado como {id}
 Route::get('/eventos/{id}', [EventoWebController::class, 'show'])->name('eventos.show');
 
-// ============================================
-// RUTAS PROTEGIDAS (requieren autenticación)
-// ============================================
+// Rutas protegidas — requieren sesión iniciada
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthWebController::class, 'dashboard'])->name('dashboard');

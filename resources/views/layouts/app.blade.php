@@ -36,7 +36,7 @@
             padding: 0 20px;
         }
 
-        /* ── Header & Navigation ── */
+        /* Header y navegación */
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -64,7 +64,7 @@
             align-items: center;
         }
 
-        /* Plain nav link */
+        /* Enlace de navegación simple */
         .nav-link {
             color: rgba(255,255,255,0.85);
             text-decoration: none;
@@ -79,7 +79,7 @@
             color: white;
         }
 
-        /* Divider between groups */
+        /* Separador vertical entre grupos de botones */
         .nav-divider {
             width: 1px;
             height: 22px;
@@ -87,7 +87,7 @@
             margin: 0 0.25rem;
         }
 
-        /* Outlined button (Login) */
+        /* Botón con borde (Iniciar sesión) */
         .nav-btn-outline {
             color: white;
             text-decoration: none;
@@ -106,7 +106,7 @@
             border-color: white;
         }
 
-        /* Solid white button (Register) */
+        /* Botón sólido blanco (Registrarse) */
         .nav-btn-solid {
             color: #667eea;
             text-decoration: none;
@@ -125,7 +125,7 @@
             transform: translateY(-1px);
         }
 
-        /* Admin button (yellow accent) */
+        /* Botón de admin con acento amarillo */
         .nav-btn-admin {
             color: #333;
             text-decoration: none;
@@ -143,7 +143,7 @@
             background: #f0c800;
         }
 
-        /* Logout button */
+        /* Botón de cerrar sesión */
         .nav-btn-logout {
             color: white;
             font-size: 0.9rem;
@@ -161,7 +161,7 @@
             background: rgba(231,76,60,0.9);
         }
 
-        /* ── Main Content ── */
+        /* Contenido principal */
         main {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
@@ -175,7 +175,7 @@
             margin-bottom: 2rem;
         }
 
-        /* ── Buttons ── */
+        /* Botones */
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
@@ -235,7 +235,7 @@
             background: #d68910;
         }
 
-        /* ── Forms ── */
+        /* Formularios */
         form {
             display: flex;
             flex-direction: column;
@@ -288,7 +288,7 @@
             margin-bottom: 1rem;
         }
 
-        /* ── Grid ── */
+        /* Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -318,7 +318,7 @@
             }
         }
 
-        /* ── Event Cards ── */
+        /* Tarjetas de evento */
         .event-card {
             border: 1px solid #e0e0e0;
             border-radius: 8px;
@@ -366,7 +366,7 @@
             margin-bottom: 1rem;
         }
 
-        /* ── Footer ── */
+        /* Footer */
         footer {
             background: #222;
             color: #aaa;
@@ -375,7 +375,7 @@
             font-size: 0.875rem;
         }
 
-        /* ── Utilities ── */
+        /* Utilidades */
         .text-center { text-align: center; }
 
         .mt-1 { margin-top: 0.5rem; }
@@ -448,7 +448,7 @@
         window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
         window.apiToken  = document.querySelector('meta[name="api-token"]')?.content || '';
 
-        // Añadir CSRF + Authorization automáticamente a todas las llamadas API mutables
+        // Intercepta fetch para inyectar CSRF y token Bearer en todas las llamadas mutables a /api
         (function () {
             const _fetch = window.fetch;
             window.fetch = function (url, opts) {

@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class AsientoController extends Controller
 {
-    /**
-     * Obtener asientos disponibles de un evento
-     */
+    // Devuelve todos los asientos de un evento con su estado (disponible/ocupado)
     public function porEvento($eventoId)
     {
         $evento = Evento::findOrFail($eventoId);
@@ -39,9 +37,7 @@ class AsientoController extends Controller
         ]);
     }
 
-    /**
-     * Obtener asientos de un sector específico para un evento
-     */
+    // Devuelve los asientos de un sector concreto junto con el precio
     public function porSector($eventoId, $sectorId)
     {
         $evento = Evento::findOrFail($eventoId);

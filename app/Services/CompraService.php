@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class CompraService
 {
-    /**
-     * Procesar la compra de una o varias reservas
-     */
+    // Convierte una o varias reservas bloqueadas en entradas definitivas
     public function procesarCompra(array $reservasIds, $userId)
     {
         $entradas = [];
@@ -40,9 +38,7 @@ class CompraService
         }
     }
 
-    /**
-     * Obtener una reserva activa perteneciente al usuario
-     */
+    // Busca la reserva bloqueada del usuario; falla si no existe
     private function obtenerReserva($reservaId, $userId)
     {
         return EstadoAsiento::where('id', $reservaId)
@@ -52,9 +48,7 @@ class CompraService
             ->firstOrFail();
     }
 
-    /**
-     * Lanza excepción si la reserva ha expirado
-     */
+    // Lanza excepción si el tiempo de reserva se agotó
     private function verificarNoExpirada($reserva)
     {
         if ($reserva->haExpirado()) {
@@ -62,9 +56,7 @@ class CompraService
         }
     }
 
-    /**
-     * Obtener el precio del sector para el evento de la reserva
-     */
+    // Obtiene el precio del sector; falla si no hay precio configurado
     private function obtenerPrecio($reserva)
     {
         $precio = $reserva->evento->precioDelSector($reserva->asiento->sector_id);
@@ -76,9 +68,7 @@ class CompraService
         return $precio;
     }
 
-    /**
-     * Crear la entrada (el ticket final con QR)
-     */
+    // Crea el ticket definitivo; el código QR se genera automáticamente en el boot del modelo
     private function crearEntrada($reserva, $precio, $userId)
     {
         return Entrada::create([

@@ -19,7 +19,6 @@ class Evento extends Model
         'fecha' => 'date',
         'hora'  => 'datetime:H:i',
     ];
-    // Relaciones
     public function precios()
     {
         return $this->hasMany(Precio::class);
@@ -38,9 +37,6 @@ class Evento extends Model
     {
         return $this->hasMany(Entrada::class);
     }
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
     public function sectoresDisponibles()
     {
         return $this->sectores()
@@ -86,9 +82,6 @@ class Evento extends Model
     {
         return $this->entradas()->count();
     }
-    // ============================================
-    // SCOPES
-    // ============================================
     public function scopeFuturos($query)
     {
         return $query->where('fecha', '>=', now()->toDateString());

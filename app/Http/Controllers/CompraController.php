@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class CompraController extends Controller
 {
-    /**
-     * Confirmar compra de reservas
-     */
+    // Recibe IDs de reservas y las convierte en entradas definitivas
     public function store(Request $request, CompraService $service)
     {
         $request->validate([

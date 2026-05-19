@@ -21,10 +21,7 @@ class Sector extends Model
         'activo' => 'boolean',
     ];
 
-    // ============================================
-    // RELACIONES
-    // ============================================
-
+    // Relaciones
     public function asientos()
     {
         return $this->hasMany(Asiento::class);
@@ -42,10 +39,7 @@ class Sector extends Model
                     ->withTimestamps();
     }
 
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
-
+    // Métodos útiles
     public function estaActivo(): bool
     {
         return $this->activo;
@@ -66,10 +60,7 @@ class Sector extends Model
             ->get();
     }
 
-    // ============================================
-    // SCOPES
-    // ============================================
-
+    // Scopes
     public function scopeActivos($query)
     {
         return $query->where('activo', true);

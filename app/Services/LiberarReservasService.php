@@ -7,10 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class LiberarReservasService
 {
-    /**
-     * Elimina todas las reservas con reservado_hasta < now()
-     * Retorna el número de reservas liberadas
-     */
+    // Elimina reservas expiradas y devuelve cuántas se borraron
     public function liberarExpiradas(): int
     {
         $expiradas = EstadoAsiento::expirados()->get();
@@ -32,9 +29,7 @@ class LiberarReservasService
         return $count;
     }
 
-    /**
-     * Libera reservas expiradas de un usuario concreto
-     */
+    // Igual que el método anterior pero filtrado por usuario
     public function liberarDeUsuario($userId): int
     {
         $expiradas = EstadoAsiento::expirados()

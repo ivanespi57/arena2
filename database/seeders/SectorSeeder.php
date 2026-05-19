@@ -11,22 +11,19 @@ class SectorSeeder extends Seeder
     {
         $sectores = [];
 
-        // Sectores 101-122
-        for ($i = 101; $i <= 122; $i++) {
+        for ($i = 101; $i <= 122; $i++) { // Gradas laterales
             $sectores[] = ['nombre' => "Sector $i", 'descripcion' => 'Grada lateral', 'activo' => true];
         }
 
-        // Sectores 301-323
-        for ($i = 301; $i <= 323; $i++) {
+        for ($i = 301; $i <= 323; $i++) { // Gradas superiores
             $sectores[] = ['nombre' => "Sector $i", 'descripcion' => 'Grada superior', 'activo' => true];
         }
 
-        // Palcos 1-22
-        for ($i = 1; $i <= 22; $i++) {
+        for ($i = 1; $i <= 22; $i++) { // Palcos VIP
             $sectores[] = ['nombre' => "Palco $i", 'descripcion' => 'Palco VIP', 'activo' => true];
         }
 
-        // Sectores especiales
+        // Zonas especiales sin numeración
         $sectores[] = ['nombre' => 'CLUB',           'descripcion' => 'Zona Club',          'activo' => true];
         $sectores[] = ['nombre' => 'JOHNNIE WALKER', 'descripcion' => 'Zona Johnnie Walker', 'activo' => true];
         $sectores[] = ['nombre' => 'PISTA',          'descripcion' => 'Pista central',       'activo' => true];

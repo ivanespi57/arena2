@@ -9,9 +9,7 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\EntradaController;
 
-// ============================================
-// RUTAS PÚBLICAS (sin autenticación)
-// ============================================
+// Rutas públicas — sin autenticación
 
 // Autenticación
 Route::post('/register', [AuthController::class, 'register']);
@@ -28,9 +26,7 @@ Route::get('/sectores', [SectorController::class, 'index']);
 Route::get('/eventos/{eventoId}/asientos',                          [AsientoController::class, 'porEvento']);
 Route::get('/eventos/{eventoId}/sectores/{sectorId}/asientos',      [AsientoController::class, 'porSector']);
 
-// ============================================
-// RUTAS PROTEGIDAS (requieren autenticación)
-// ============================================
+// Rutas protegidas — requieren token Sanctum
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -51,9 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/entradas/{id}', [EntradaController::class, 'show']);
 });
 
-// ============================================
-// RUTAS DE ADMINISTRADOR
-// ============================================
+// Rutas de administrador — requieren token + middleware admin
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
 

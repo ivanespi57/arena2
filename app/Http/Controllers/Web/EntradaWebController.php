@@ -22,7 +22,6 @@ class EntradaWebController extends Controller
     public function show($id)
     {
         try {
-            // index() tiene 'valida'; show() tiene 'comprador' y 'codigo_qr'
             $indexResp = app(EntradaController::class)->index(request());
             $all       = $indexResp->getData(true)['data'] ?? [];
             $fromList  = collect($all)->firstWhere('id', (int) $id);
@@ -34,7 +33,7 @@ class EntradaWebController extends Controller
             $showResp = app(EntradaController::class)->show($id);
             $detail   = $showResp->getData(true)['data'] ?? [];
 
-            // Mezclar: fromList aporta 'valida'; detail aporta 'comprador'
+            // index aporta 'valida'; show aporta 'comprador' y 'codigo_qr'
             $entrada        = array_merge($fromList, $detail);
             $entrada['id']  = (int) $id;
 

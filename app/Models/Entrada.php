@@ -24,10 +24,7 @@ class Entrada extends Model
         'precio_pagado' => 'decimal:2',
     ];
 
-    // ============================================
-    // RELACIONES
-    // ============================================
-
+    // Relaciones
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -43,10 +40,7 @@ class Entrada extends Model
         return $this->belongsTo(Asiento::class);
     }
 
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
-
+    // Métodos útiles
     public static function generarCodigoQR(): string
     {
         do {
@@ -79,10 +73,7 @@ class Entrada extends Model
         return !$this->evento->yaPaso();
     }
 
-    // ============================================
-    // SCOPES
-    // ============================================
-
+    // Scopes
     public function scopeDeUsuario($query, $userId)
     {
         return $query->where('user_id', $userId);
@@ -100,10 +91,7 @@ class Entrada extends Model
         });
     }
 
-    // ============================================
-    // BOOT
-    // ============================================
-
+    // Genera el QR automáticamente al crear la entrada si no se proporcionó uno
     protected static function boot()
     {
         parent::boot();

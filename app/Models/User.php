@@ -35,20 +35,15 @@ class User extends Authenticatable
     }
 
     // Relaciones
-
-    // Cada usuario puede tener varias reservas de asientos
     public function reservas()
     {
         return $this->hasMany(EstadoAsiento::class);
     }
 
-    // Entradas compradas por este usuario
     public function entradas()
     {
         return $this->hasMany(Entrada::class);
     }
-
-    // Métodos útiles
 
     // Solo devuelve las reservas que aún no han expirado
     public function reservasActivas()
@@ -59,7 +54,6 @@ class User extends Authenticatable
             ->get();
     }
 
-    // Comprueba si el usuario tiene permisos de admin
     public function isAdmin(): bool
     {
         return $this->is_admin;

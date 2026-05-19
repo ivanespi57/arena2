@@ -23,10 +23,7 @@ class EstadoAsiento extends Model
         'reservado_hasta' => 'datetime',
     ];
 
-    // ============================================
-    // RELACIONES
-    // ============================================
-
+    // Relaciones
     public function evento()
     {
         return $this->belongsTo(Evento::class);
@@ -42,10 +39,7 @@ class EstadoAsiento extends Model
         return $this->belongsTo(User::class);
     }
 
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
-
+    // Métodos útiles
     public function haExpirado(): bool
     {
         if ($this->estado === 'vendido') {
@@ -85,10 +79,7 @@ class EstadoAsiento extends Model
         return $this->save();
     }
 
-    // ============================================
-    // SCOPES
-    // ============================================
-
+    // Scopes
     public function scopeBloqueados($query)
     {
         return $query->where('estado', 'bloqueado');

@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class EventoController extends Controller
 {
-    /**
-     * Listar eventos futuros (público)
-     */
+    // Lista solo los eventos que aún no han pasado
     public function index()
     {
         $eventos = Evento::futuros()
@@ -21,9 +19,7 @@ class EventoController extends Controller
         ]);
     }
 
-    /**
-     * Ver detalle de un evento (público)
-     */
+    // Detalle del evento con sectores y disponibilidad de asientos
     public function show($id)
     {
         $evento = Evento::with(['precios.sector'])
@@ -39,9 +35,7 @@ class EventoController extends Controller
         ]);
     }
 
-    /**
-     * Crear evento (admin)
-     */
+    // Crea un evento; la fecha debe ser única para evitar solapamientos
     public function store(Request $request)
     {
         $request->validate([
@@ -61,9 +55,7 @@ class EventoController extends Controller
         ], 201);
     }
 
-    /**
-     * Actualizar evento (admin)
-     */
+    // Actualiza solo los campos enviados (PATCH-style)
     public function update(Request $request, $id)
     {
         $evento = Evento::findOrFail($id);
@@ -85,9 +77,7 @@ class EventoController extends Controller
         ]);
     }
 
-    /**
-     * Eliminar evento (admin)
-     */
+    // Elimina el evento solo si no tiene entradas vendidas
     public function destroy($id)
     {
         $evento = Evento::findOrFail($id);

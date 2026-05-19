@@ -27,8 +27,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
 
-        // Cargar reservas activas
-        try {
+        try { // reservas activas
             const res  = await fetch('/api/reservas', {
                 headers: { 'Authorization': `Bearer ${window.apiToken}`, 'Accept': 'application/json' }
             });
@@ -58,9 +57,7 @@
             document.getElementById('reservas-container').innerHTML = '<p>Error cargando reservas</p>';
         }
 
-        // Cargar ultimas entradas
-        // La API devuelve estructura plana: { id, evento (string), fecha, hora, asiento (string), precio, valida }
-        try {
+        try { // últimas entradas — la API devuelve estructura plana: { id, evento, fecha, hora, asiento, precio, valida }
             const res  = await fetch('/api/entradas', {
                 headers: { 'Authorization': `Bearer ${window.apiToken}`, 'Accept': 'application/json' }
             });

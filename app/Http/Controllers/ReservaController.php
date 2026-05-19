@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class ReservaController extends Controller
 {
-    /**
-     * Reservar un asiento (añadir al carrito)
-     */
+    // Bloquea el asiento durante 15 minutos para el usuario
     public function store(Request $request, ReservaService $service)
     {
         $request->validate([
@@ -37,9 +35,7 @@ class ReservaController extends Controller
         }
     }
 
-    /**
-     * Ver mis reservas activas
-     */
+    // Lista las reservas que aún no han expirado
     public function index(Request $request, ReservaService $service)
     {
         $reservas = $service->obtenerReservasActivas(auth()->id());
@@ -47,9 +43,7 @@ class ReservaController extends Controller
         return ReservaResource::collection($reservas);
     }
 
-    /**
-     * Cancelar una reserva
-     */
+    // Libera el asiento antes de que expire el tiempo
     public function destroy($id, ReservaService $service)
     {
         try {

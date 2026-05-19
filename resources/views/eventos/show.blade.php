@@ -129,7 +129,7 @@
 </div>
 
 <div class="card">
-    {{-- Selector de sector + precio en una fila --}}
+    {{-- Sector y precio en la misma fila --}}
     <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.25rem;">
         <div style="flex:1; min-width:200px;">
             <label style="font-weight:600; font-size:0.85rem; color:#555; display:block; margin-bottom:0.4rem;">Sector</label>
@@ -153,7 +153,7 @@
         </div>
     </div>
 
-    {{-- Mapa de asientos --}}
+    {{-- Mapa de asientos del sector --}}
     <h2 style="margin-bottom:0.75rem; font-size:1.1rem;">
         Asientos
         <span id="sector-nombre-titulo" style="font-weight:400; font-size:0.95rem; color:#666;"></span>
@@ -163,7 +163,7 @@
     </div>
 </div>
 
-{{-- Carrito --}}
+{{-- Carrito de selección --}}
 <div class="card">
     <h2>Mi selección</h2>
     <div id="carrito-items" style="margin-top:0.75rem;">
@@ -209,7 +209,6 @@
 
     document.addEventListener('DOMContentLoaded', cargarEvento);
 
-    // ── Cargar evento ─────────────────────────────────────────────────
     async function cargarEvento() {
         try {
             const res  = await fetch(`/api/eventos/${eventoId}`);
@@ -238,8 +237,7 @@
             document.getElementById('evento-disponibles').innerHTML =
                 `<span class="badge-disponibles">${asientos_disponibles} asientos disponibles</span>`;
 
-            // Guardar precios por sectorId
-            sectores_disponibles.forEach(s => {
+            sectores_disponibles.forEach(s => { // guarda precio por sector para calcular el total del carrito
                 preciosPorSector[s.id] = s.pivot ? parseFloat(s.pivot.precio) : 0;
             });
 
@@ -249,7 +247,6 @@
         }
     }
 
-    // ── Renderizar selector de sector ────────────────────────────────
     function renderSectores(sectores) {
         const container = document.getElementById('sectores-container');
         if (!sectores.length) {
@@ -293,7 +290,6 @@
         cargarAsientos(sectorId, nombre);
     }
 
-    // ── Cargar asientos del sector ────────────────────────────────────
     async function cargarAsientos(sectorId, sectorNombre) {
         document.getElementById('sector-nombre-titulo').textContent = `— ${sectorNombre}`;
         const container = document.getElementById('asientos-container');
@@ -302,22 +298,20 @@
         try {
             const res  = await fetch(`/api/eventos/${eventoId}/sectores/${sectorId}/asientos`);
             const json = await res.json();
-            const asientos = json.data.asientos; // {sector, precio, asientos:[{id,fila,numero,disponible}]}
+            const asientos = json.data.asientos;
 
             if (!asientos || !asientos.length) {
                 container.innerHTML = '<p style="color:#888;">No hay asientos en este sector.</p>';
                 return;
             }
 
-            // Enriquecer con info del sector para el carrito
-            const enriched = asientos.map(a => ({
+            const enriched = asientos.map(a => ({ // añade sector_id y nombre para mostrarlos en el carrito
                 ...a,
                 sector_id:     sectorId,
                 sector_nombre: sectorNombre,
             }));
 
-            // Agrupar por fila
-            const filas = {};
+            const filas = {}; // agrupa asientos por fila para pintarlos en filas
             enriched.forEach(a => {
                 if (!filas[a.fila]) filas[a.fila] = [];
                 filas[a.fila].push(a);
@@ -359,7 +353,6 @@
         return JSON.parse(decodeURIComponent(btn.getAttribute('data-asiento')));
     }
 
-    // ── Toggle asiento ────────────────────────────────────────────────
     function toggleAsiento(asiento) {
         const idx = selectedAsientos.findIndex(a => a.id === asiento.id);
         if (idx > -1) {
@@ -369,15 +362,13 @@
             selectedAsientos.push(asiento);
         }
         actualizarCarrito();
-        // Re-render asiento buttons color in place
-        document.querySelectorAll('.asiento-btn').forEach(btn => {
+        document.querySelectorAll('.asiento-btn').forEach(btn => { // actualiza el color de cada botón sin re-renderizar todo
             const a = JSON.parse(decodeURIComponent(btn.getAttribute('data-asiento')));
             const selected = selectedAsientos.some(s => s.id === a.id);
             btn.style.background = selected ? '#3498db' : (a.disponible ? '#27ae60' : '#e74c3c');
         });
     }
 
-    // ── Actualizar carrito ────────────────────────────────────────────
     function actualizarCarrito() {
         const container = document.getElementById('carrito-items');
         const totalEl   = document.getElementById('carrito-total');
@@ -413,7 +404,6 @@
         acciones.style.display = 'block';
     }
 
-    // ── Reservar asientos ─────────────────────────────────────────────
     async function reservarAsientos() {
         const btn = document.getElementById('btn-reservar');
         btn.disabled    = true;
@@ -449,7 +439,6 @@
         }
     }
 
-    // ── Confirmar compra ──────────────────────────────────────────────
     async function confirmarCompra() {
         const btn = document.getElementById('btn-comprar');
         btn.disabled    = true;
@@ -480,7 +469,6 @@
         }
     }
 
-    // ── Cancelar reservas ─────────────────────────────────────────────
     async function cancelarReservas() {
         if (!confirm('¿Cancelar todas las reservas?')) return;
         for (const id of reservasIds) {

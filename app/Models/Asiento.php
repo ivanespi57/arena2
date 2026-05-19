@@ -17,10 +17,7 @@ class Asiento extends Model
         'numero',
     ];
 
-    // ============================================
-    // RELACIONES
-    // ============================================
-
+    // Relaciones
     public function sector()
     {
         return $this->belongsTo(Sector::class);
@@ -36,10 +33,7 @@ class Asiento extends Model
         return $this->hasMany(Entrada::class);
     }
 
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
-
+    // Métodos útiles
     public function nombreCompleto(): string
     {
         return $this->sector->nombre . ' - Fila ' . $this->fila . ' - Asiento ' . $this->numero;

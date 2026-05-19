@@ -9,14 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class ReservaService
 {
-    /**
-     * Reservar un asiento para un evento (15 minutos)
-     */
+    // Reserva un asiento durante 15 minutos; usa bloqueo pesimista para evitar dobles reservas
     public function reservarAsiento($eventoId, $asientoId, $userId)
     {
         DB::beginTransaction();
         try {
-            // Bloqueo pesimista: evita race condition
             $existeReserva = EstadoAsiento::where('evento_id', $eventoId)
                 ->where('asiento_id', $asientoId)
                 ->lockForUpdate()
@@ -49,9 +46,7 @@ class ReservaService
         }
     }
 
-    /**
-     * Cancelar una reserva del usuario
-     */
+    // Elimina la reserva si pertenece al usuario y sigue bloqueada
     public function cancelarReserva($reservaId, $userId)
     {
         $reserva = EstadoAsiento::where('id', $reservaId)
@@ -64,9 +59,7 @@ class ReservaService
         return true;
     }
 
-    /**
-     * Obtener reservas activas (no expiradas) de un usuario
-     */
+    // Devuelve las reservas bloqueadas que aún no han caducado
     public function obtenerReservasActivas($userId)
     {
         return EstadoAsiento::where('user_id', $userId)
@@ -76,9 +69,7 @@ class ReservaService
             ->get();
     }
 
-    /**
-     * Verifica que el sector tenga precio definido para el evento
-     */
+    // Lanza excepción si el sector no está disponible para el evento
     private function verificarSectorDisponible($evento, $sectorId)
     {
         $precio = $evento->precioDelSector($sectorId);

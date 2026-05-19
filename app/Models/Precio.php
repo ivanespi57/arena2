@@ -23,10 +23,7 @@ class Precio extends Model
         'disponible' => 'boolean',
     ];
 
-    // ============================================
-    // RELACIONES
-    // ============================================
-
+    // Relaciones
     public function evento()
     {
         return $this->belongsTo(Evento::class);
@@ -37,10 +34,7 @@ class Precio extends Model
         return $this->belongsTo(Sector::class);
     }
 
-    // ============================================
-    // MÉTODOS ÚTILES
-    // ============================================
-
+    // Métodos útiles
     public function precioFormateado(): string
     {
         return number_format($this->precio, 2, ',', '.') . ' €';
@@ -51,10 +45,7 @@ class Precio extends Model
         return $this->disponible && $this->sector->activo;
     }
 
-    // ============================================
-    // SCOPES
-    // ============================================
-
+    // Scopes
     public function scopeDisponibles($query)
     {
         return $query->where('disponible', true)

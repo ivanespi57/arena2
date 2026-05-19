@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class EntradaController extends Controller
 {
-    /**
-     * Listar mis entradas
-     */
+    // Devuelve todas las entradas del usuario con formato plano para la vista
     public function index(Request $request)
     {
         $entradas = $request->user()
@@ -35,9 +33,7 @@ class EntradaController extends Controller
         ]);
     }
 
-    /**
-     * Ver detalle de una entrada
-     */
+    // Devuelve el detalle completo de una entrada (incluye comprador y QR)
     public function show($id)
     {
         $entrada = Entrada::where('id', $id)

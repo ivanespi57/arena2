@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class SectorController extends Controller
 {
-    /**
-     * Listar sectores activos (público)
-     */
+    // Lista los sectores activos con el total de asientos de cada uno
     public function index()
     {
         $sectores = Sector::activos()
@@ -21,9 +19,7 @@ class SectorController extends Controller
         ]);
     }
 
-    /**
-     * Crear sector (admin)
-     */
+    // Crea un sector; el nombre debe ser único en la tabla
     public function store(Request $request)
     {
         $request->validate([
@@ -40,9 +36,7 @@ class SectorController extends Controller
         ], 201);
     }
 
-    /**
-     * Actualizar sector (admin)
-     */
+    // Actualiza el sector ignorando la unicidad de nombre sobre sí mismo
     public function update(Request $request, $id)
     {
         $sector = Sector::findOrFail($id);
@@ -61,9 +55,7 @@ class SectorController extends Controller
         ]);
     }
 
-    /**
-     * Eliminar sector (admin)
-     */
+    // Elimina el sector solo si no tiene asientos asociados
     public function destroy($id)
     {
         $sector = Sector::findOrFail($id);

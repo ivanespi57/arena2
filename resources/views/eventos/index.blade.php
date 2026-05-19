@@ -14,15 +14,14 @@
 <script>
     function formatFecha(val) {
         if (!val) return '';
-        // Recortar ISO: "2026-08-10T00:00:00.000000Z" → "2026-08-10"
-        const d = val.substring(0, 10);
+        const d = val.substring(0, 10); // recorta "2026-08-10T00:00:00Z" → "2026-08-10"
         const [y, m, day] = d.split('-');
         return `${day}/${m}/${y}`;
     }
 
     function formatHora(val) {
         if (!val) return '';
-        return val.substring(0, 5); // "19:00:00" → "19:00"
+        return val.substring(0, 5); // "19:00:00" → "19:00"  (la API devuelve segundos)
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
